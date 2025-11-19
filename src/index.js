@@ -8,7 +8,16 @@ const { PrismaClient } = require("@prisma/client");
 const app = express();
 const prisma = new PrismaClient();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://frontpkmn.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+  })
+);
+
+app.options("*", cors());
 app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET || "defaultsecret";
@@ -91,7 +100,7 @@ app.post("/api/teams", auth, async (req, res) => {
 app.get("/api/teams", auth, async (req, res) => {
   try {
     const teams = await prisma.team.findMany({
-      where: { ownerId: req.user.id }
+    where: { ownerId: req.user.id }
     });
     res.json(teams);
   } catch {
