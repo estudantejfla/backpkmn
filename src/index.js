@@ -107,7 +107,7 @@ app.put("/api/teams/:id", auth, async (req, res) => {
       where: { id: Number(req.params.id), ownerId: req.user.id },
       data: {
         name,
-        pokemons: JSON.stringify(pokemons),
+        pokemons: JSON.stringify(pokemons)
       }
     });
 
